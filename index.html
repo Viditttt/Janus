@@ -1,1135 +1,1320 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Janus Ventures | Institutional Capital Architecture</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        serif: ['Cormorant Garamond', 'serif'],
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        'janus-dark': '#0a0a0a',
-                        'janus-charcoal': '#141414',
-                        'janus-graphite': '#1a1a1a',
-                        'janus-steel': '#2a2a2a',
-                        'janus-silver': '#8a8a8a',
-                        'janus-pearl': '#e8e8e8',
-                        'janus-gold': '#c9a962',
-                        'janus-gold-dim': '#9a8250',
-                    },
-                    letterSpacing: {
-                        'ultra': '0.35em',
-                        'mega': '0.5em',
-                    },
-                    transitionTimingFunction: {
-                        'luxury': 'cubic-bezier(0.16, 1, 0.3, 1)',
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        /* Core Aesthetics */
-        body {
-            background-color: #0a0a0a;
-            color: #e8e8e8;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* Typography Refinement */
-        .font-serif {
-            font-feature-settings: "liga" 1, "calt" 1;
-        }
-
-        /* Custom Cursor */
-        .custom-cursor {
-            width: 20px;
-            height: 20px;
-            border: 1px solid #c9a962;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.15s ease, opacity 0.15s ease;
-            mix-blend-mode: difference;
-        }
-
-        .cursor-dot {
-            width: 4px;
-            height: 4px;
-            background: #c9a962;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-        }
-
-        /* Noise Texture Overlay */
-        .noise-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9998;
-            opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0a0a0a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #2a2a2a;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #c9a962;
-        }
-
-        /* Selection */
-        ::selection {
-            background: #c9a962;
-            color: #0a0a0a;
-        }
-
-        /* Animations */
-        .reveal-text {
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-        }
-
-        .char-reveal {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(100%);
-            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .char-reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .line-draw {
-            width: 0;
-            transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .line-draw.visible {
-            width: 100%;
-        }
-
-        /* Magnetic Button Effect */
-        .magnetic-btn {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        /* Gold Gradient Text */
-        .text-gold-gradient {
-            background: linear-gradient(135deg, #c9a962 0%, #f0e6d2 50%, #c9a962 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            background-size: 200% auto;
-            animation: shine 8s linear infinite;
-        }
-
-        @keyframes shine {
-            to {
-                background-position: 200% center;
-            }
-        }
-
-        /* Card Hover Effects */
-        .elite-card {
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(201, 169, 98, 0.1);
-        }
-
-        .elite-card:hover {
-            border-color: rgba(201, 169, 98, 0.3);
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(201, 169, 98, 0.1);
-        }
-
-        /* Navigation */
-        .nav-link {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: #c9a962;
-            transform: translateX(-101%);
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .nav-link:hover::after {
-            transform: translateX(0);
-        }
-
-        /* Form Inputs */
-        .elite-input {
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid #2a2a2a;
-            transition: all 0.4s ease;
-        }
-
-        .elite-input:focus {
-            outline: none;
-            border-bottom-color: #c9a962;
-            background: rgba(201, 169, 98, 0.02);
-        }
-
-        /* Case Study Expansion */
-        .case-study-content {
-            display: grid;
-            grid-template-rows: 0fr;
-            transition: grid-template-rows 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .case-study-content.open {
-            grid-template-rows: 1fr;
-        }
-
-        .case-study-inner {
-            overflow: hidden;
-        }
-
-        /* Parallax Container */
-        .parallax-wrap {
-            overflow: hidden;
-            position: relative;
-        }
-
-        .parallax-img {
-            will-change: transform;
-        }
-
-        /* Loading Screen */
-        #loader {
-            position: fixed;
-            inset: 0;
-            background: #0a0a0a;
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            transition: opacity 0.8s ease, visibility 0.8s;
-        }
-
-        #loader.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .loader-line {
-            width: 0;
-            height: 1px;
-            background: #c9a962;
-            animation: loadLine 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes loadLine {
-            to { width: 200px; }
-        }
-
-        /* Ambient Glow */
-        .ambient-glow {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(201, 169, 98, 0.03) 0%, transparent 70%);
-            pointer-events: none;
-            filter: blur(100px);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Janus Venture | Institutional Investment Banking</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0
+,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+theme: {
+extend: {
+fontFamily: {
+serif: ['Cormorant Garamond', 'serif'],
+sans: ['Inter', 'sans-serif'],
+},
+colors: {
+'janus-dark': '#0a0a0a',
+'janus-charcoal': '#141414',
+'janus-graphite': '#1a1a1a',
+'janus-steel': '#2a2a2a',
+'janus-silver': '#8a8a8a',
+'janus-pearl': '#e8e8e8',
+'janus-gold': '#c9a962',
+'janus-gold-dim': '#9a8250',
+},
+letterSpacing: {
+'ultra': '0.35em',
+'mega': '0.5em',
+},
+transitionTimingFunction: {
+'luxury': 'cubic-bezier(0.16, 1, 0.3, 1)',
+}
+}
+}
+}
+</script>
+<style>
+body {
+background-color: #0a0a0a;
+color: #e8e8e8;
+font-family: 'Inter', sans-serif;
+overflow-x: hidden;
+}
+.font-serif {
+font-feature-settings: "liga" 1, "calt" 1;
+}
+.custom-cursor {
+width: 20px;
+height: 20px;
+border: 1px solid #c9a962;
+border-radius: 50%;
+position: fixed;
+pointer-events: none;
+z-index: 9999;
+transition: transform 0.15s ease, opacity 0.15s ease;
+mix-blend-mode: difference;
+}
+.cursor-dot {
+width: 4px;
+height: 4px;
+background: #c9a962;
+border-radius: 50%;
+position: fixed;
+pointer-events: none;
+z-index: 9999;
+mix-blend-mode: difference;
+}
+.noise-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none;
+z-index: 9998;
+opacity: 0.03;
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200'
+xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence
+type='fractalNoise' baseFrequency='0.9' numOctaves='4'
+stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25'
+filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+::-webkit-scrollbar {
+width: 6px;
+}
+::-webkit-scrollbar-track {
+background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+background: #2a2a2a;
+border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+background: #c9a962;
+}
+::selection {
+background: #c9a962;
+color: #0a0a0a;
+}
+.reveal-text {
+clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+.char-reveal {
+display: inline-block;
+opacity: 0;
+transform: translateY(100%);
+transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s cubic-bezier(0.16, 1,
+0.3, 1);
+}
+.char-reveal.visible {
+opacity: 1;
+transform: translateY(0);
+}
+.line-draw {
+width: 0;
+transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.line-draw.visible {
+width: 100%;
+}
+.magnetic-btn {
+position: relative;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.text-gold-gradient {
+background: linear-gradient(135deg, #c9a962 0%, #f0e6d2 50%, #c9a962 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+background-size: 200% auto;
+animation: shine 8s linear infinite;
+}
+@keyframes shine {
+to {
+background-position: 200% center;
+}
+}
+.elite-card {
+transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+border: 1px solid rgba(201, 169, 98, 0.1);
+}
+.elite-card:hover {
+border-color: rgba(201, 169, 98, 0.3);
+transform: translateY(-8px);
+box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(201, 169, 98, 0.1);
+}
+.nav-link {
+position: relative;
+overflow: hidden;
+}
+.nav-link::after {
+content: '';
+position: absolute;
+bottom: 0;
+left: 0;
+width: 100%;
+height: 1px;
+background: #c9a962;
+transform: translateX(-101%);
+transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nav-link:hover::after {
+transform: translateX(0);
+}
+.elite-input {
+background: transparent;
+border: none;
+border-bottom: 1px solid #2a2a2a;
+transition: all 0.4s ease;
+}
+.elite-input:focus {
+outline: none;
+border-bottom-color: #c9a962;
+background: rgba(201, 169, 98, 0.02);
+}
+.case-study {
+overflow: hidden;
+}
+.case-study-header {
+position: relative;
+z-index: 10;
+background: inherit;
+}
+.case-study-content {
+display: grid;
+grid-template-rows: 0fr;
+transition: grid-template-rows 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.case-study-content.open {
+grid-template-rows: 1fr;
+}
+.case-study-inner {
+overflow: hidden;
+opacity: 0;
+transition: opacity 0.4s ease 0.2s;
+}
+.case-study-content.open .case-study-inner {
+opacity: 1;
+}
+#loader {
+position: fixed;
+inset: 0;
+background: #0a0a0a;
+z-index: 10000;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+transition: opacity 0.8s ease, visibility 0.8s;
+}
+#loader.hidden {
+opacity: 0;
+visibility: hidden;
+}
+.loader-line {
+width: 0;
+height: 1px;
+background: #c9a962;
+animation: loadLine 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes loadLine {
+to { width: 200px; }
+}
+.ambient-glow {
+position: absolute;
+width: 600px;
+height: 600px;
+background: radial-gradient(circle, rgba(201, 169, 98, 0.03) 0%, transparent 70%);
+pointer-events: none;
+filter: blur(100px);
+}
+.mandate-card {
+transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+border: 1px solid rgba(201, 169, 98, 0.15);
+}
+.mandate-card:hover {
+border-color: rgba(201, 169, 98, 0.4);
+transform: translateY(-4px);
+}
+.testimonial-card {
+transition: all 0.5s ease;
+}
+.testimonial-card:hover {
+transform: translateY(-4px);
+}
+</style>
 </head>
 <body class="antialiased">
-
-    <!-- Loading Screen -->
-    <div id="loader">
-        <div class="text-center">
-            <h1 class="font-serif text-3xl tracking-mega text-janus-pearl mb-8 opacity-0 animate-[fadeIn_1s_ease_forwards]">JANUS</h1>
-            <div class="loader-line mx-auto"></div>
-            <p class="mt-4 text-xs tracking-ultra text-janus-silver uppercase opacity-0 animate-[fadeIn_1s_ease_0.5s_forwards]">Capital Architecture</p>
-        </div>
-    </div>
-
-    <!-- Custom Cursor -->
-    <div class="custom-cursor hidden md:block"></div>
-    <div class="cursor-dot hidden md:block"></div>
-
-    <!-- Noise Overlay -->
-    <div class="noise-overlay"></div>
-
-    <!-- Navigation -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-700 py-6 px-8 lg:px-16">
-        <div class="flex justify-between items-center">
-            <a href="#" class="group">
-                <h1 class="font-serif text-2xl tracking-mega text-janus-pearl group-hover:text-janus-gold transition-colors duration-500">
-                    JANUS<span class="text-janus-gold">.</span>
-                </h1>
-            </a>
-
-            <div class="hidden md:flex items-center gap-12">
-                <a href="#philosophy" class="nav-link text-xs tracking-ultra uppercase text-janus-silver hover:text-janus-pearl transition-colors py-2">Philosophy</a>
-                <a href="#architecture" class="nav-link text-xs tracking-ultra uppercase text-janus-silver hover:text-janus-pearl transition-colors py-2">Architecture</a>
-                <a href="#transactions" class="nav-link text-xs tracking-ultra uppercase text-janus-silver hover:text-janus-pearl transition-colors py-2">Transactions</a>
-                <a href="#intelligence" class="nav-link text-xs tracking-ultra uppercase text-janus-silver hover:text-janus-pearl transition-colors py-2">Intelligence</a>
-                <a href="#contact" class="magnetic-btn ml-8 px-8 py-3 border border-janus-gold/30 text-janus-gold text-xs tracking-ultra uppercase hover:bg-janus-gold hover:text-janus-dark transition-all duration-500">
-                    Initiate
-                </a>
-            </div>
-
-            <button id="mobile-menu-btn" class="md:hidden text-janus-pearl">
-                <i data-lucide="menu" class="w-6 h-6"></i>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="fixed inset-0 bg-janus-dark z-40 transform translate-x-full transition-transform duration-700 md:hidden flex flex-col items-center justify-center gap-8">
-        <button id="close-menu" class="absolute top-6 right-8 text-janus-pearl">
-            <i data-lucide="x" class="w-6 h-6"></i>
-        </button>
-        <a href="#philosophy" class="text-2xl font-serif text-janus-pearl hover:text-janus-gold transition-colors">Philosophy</a>
-        <a href="#architecture" class="text-2xl font-serif text-janus-pearl hover:text-janus-gold transition-colors">Architecture</a>
-        <a href="#transactions" class="text-2xl font-serif text-janus-pearl hover:text-janus-gold transition-colors">Transactions</a>
-        <a href="#contact" class="mt-8 px-8 py-3 border border-janus-gold text-janus-gold text-sm tracking-ultra uppercase">Initiate</a>
-    </div>
-
-    <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        <div class="ambient-glow top-1/4 left-1/4"></div>
-        <div class="ambient-glow bottom-1/4 right-1/4"></div>
-
-        <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-16 text-center">
-            <div class="mb-8 overflow-hidden">
-                <p class="text-xs tracking-mega uppercase text-janus-gold reveal-text translate-y-full animate-[slideUp_1s_ease_0.5s_forwards] opacity-0">
-                    Institutional Capital Architecture
-                </p>
-            </div>
-
-            <h1 class="font-serif text-5xl md:text-7xl lg:text-9xl font-light text-janus-pearl leading-[0.9] mb-12 tracking-tight">
-                <span class="block overflow-hidden">
-                    <span class="char-reveal inline-block">We</span>
-                    <span class="char-reveal inline-block italic text-janus-gold">architect</span>
-                </span>
-                <span class="block overflow-hidden mt-2">
-                    <span class="char-reveal inline-block">the</span>
-                    <span class="char-reveal inline-block">invisible</span>
-                </span>
-            </h1>
-
-            <div class="max-w-2xl mx-auto mb-16 overflow-hidden">
-                <p class="text-lg md:text-xl text-janus-silver font-light leading-relaxed reveal-text translate-y-full animate-[slideUp_1s_ease_0.8s_forwards] opacity-0">
-                    Partnering with exceptional founders to design financial foundations that transform ambition into institutional-grade value.
-                </p>
-            </div>
-
-            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center reveal-text translate-y-full animate-[slideUp_1s_ease_1s_forwards] opacity-0">
-                <a href="#contact" class="magnetic-btn group relative px-10 py-5 bg-janus-gold text-janus-dark text-xs tracking-ultra uppercase overflow-hidden transition-all duration-500 hover:shadow-[0_0_40px_rgba(201,169,98,0.3)]">
-                    <span class="relative z-10">Architect Your Capital</span>
-                    <div class="absolute inset-0 bg-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                </a>
-                <a href="#philosophy" class="magnetic-btn px-10 py-5 border border-janus-steel text-janus-pearl text-xs tracking-ultra uppercase hover:border-janus-gold hover:text-janus-gold transition-all duration-500">
-                    Explore Methodology
-                </a>
-            </div>
-        </div>
-
-        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce opacity-30">
-            <i data-lucide="chevron-down" class="w-6 h-6 text-janus-gold"></i>
-        </div>
-    </section>
-
-    <!-- Philosophy Section -->
-    <section id="philosophy" class="relative py-32 md:py-48 bg-janus-charcoal">
-        <div class="max-w-7xl mx-auto px-6 lg:px-16">
-            <div class="grid lg:grid-cols-12 gap-16 items-center">
-                <div class="lg:col-span-5 space-y-8">
-                    <div class="space-y-6">
-                        <p class="text-xs tracking-mega uppercase text-janus-gold">Our Philosophy</p>
-                        <h2 class="font-serif text-4xl md:text-6xl font-light text-janus-pearl leading-tight">
-                            Most firms <span class="italic text-janus-silver">connect.</span><br>
-                            We <span class="text-janus-gold">construct.</span>
-                        </h2>
-                    </div>
-                    
-                    <div class="w-24 h-px bg-gradient-to-r from-janus-gold to-transparent line-draw"></div>
-
-                    <div class="space-y-6 text-janus-silver font-light leading-relaxed text-lg">
-                        <p>
-                            At Janus Ventures, we reject the transactional paradigm. We embed ourselves within your journey, combining capital market expertise with operational rigor to design win-win architectures.
-                        </p>
-                        <p class="border-l-2 border-janus-gold pl-6 text-janus-pearl">
-                            Our founder's family built empires from zero—we understand that real wealth isn't raised, it's engineered.
-                        </p>
-                    </div>
-
-                    <div class="pt-8">
-                        <div class="flex items-center gap-4 text-xs tracking-ultra uppercase text-janus-silver">
-                            <span class="w-12 h-px bg-janus-gold"></span>
-                            <span>Est. 2019</span>
-                            <span class="w-2 h-px bg-janus-steel"></span>
-                            <span>New Delhi • Singapore • Dubai</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-7 relative">
-                    <div class="relative aspect-[4/3] bg-janus-graphite overflow-hidden group">
-                        <div class="absolute inset-0 bg-gradient-to-br from-janus-steel/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="text-center p-12 border border-janus-gold/20">
-                                <i data-lucide="compass" class="w-16 h-16 text-janus-gold/40 mx-auto mb-6"></i>
-                                <p class="font-serif text-3xl text-janus-pearl italic">"Unity of Purpose"</p>
-                                <p class="mt-4 text-xs tracking-ultra uppercase text-janus-silver">Non-Negotiable Principle</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="absolute -bottom-8 -right-8 w-48 h-48 border border-janus-gold/10 -z-10"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Three Pillars -->
-    <section class="py-32 bg-janus-dark relative overflow-hidden">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-janus-steel/5 via-transparent to-transparent"></div>
-        
-        <div class="max-w-7xl mx-auto px-6 lg:px-16 relative z-10">
-            <div class="text-center mb-24">
-                <p class="text-xs tracking-mega uppercase text-janus-gold mb-6">The Triad</p>
-                <h2 class="font-serif text-4xl md:text-5xl text-janus-pearl font-light">Our Operating System</h2>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Pillar 1 -->
-                <div class="elite-card bg-janus-charcoal p-10 md:p-12 group cursor-pointer" onclick="togglePillar(this)">
-                    <div class="flex justify-between items-start mb-8">
-                        <span class="font-serif text-6xl text-janus-gold/20 group-hover:text-janus-gold/40 transition-colors">01</span>
-                        <i data-lucide="arrow-up-right" class="w-6 h-6 text-janus-gold opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all"></i>
-                    </div>
-                    <h3 class="font-serif text-2xl text-janus-pearl mb-4 italic">Co-Invested Conviction</h3>
-                    <div class="w-12 h-px bg-janus-gold/30 mb-6 group-hover:w-full transition-all duration-500"></div>
-                    <p class="text-janus-silver font-light leading-relaxed text-sm">
-                        We deploy our own capital in every transaction. Complete alignment. Shared risk. True partnership.
-                    </p>
-                    <div class="mt-8 overflow-hidden h-0 group-hover:h-auto transition-all duration-500 opacity-0 group-hover:opacity-100">
-                        <p class="text-xs text-janus-gold tracking-widest uppercase">Skin in the game</p>
-                    </div>
-                </div>
-
-                <!-- Pillar 2 -->
-                <div class="elite-card bg-janus-charcoal p-10 md:p-12 group cursor-pointer">
-                    <div class="flex justify-between items-start mb-8">
-                        <span class="font-serif text-6xl text-janus-gold/20 group-hover:text-janus-gold/40 transition-colors">02</span>
-                        <i data-lucide="arrow-up-right" class="w-6 h-6 text-janus-gold opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all"></i>
-                    </div>
-                    <h3 class="font-serif text-2xl text-janus-pearl mb-4 italic">Capital Stack Engineering</h3>
-                    <div class="w-12 h-px bg-janus-gold/30 mb-6 group-hover:w-full transition-all duration-500"></div>
-                    <p class="text-janus-silver font-light leading-relaxed text-sm">
-                        Beyond equity. We architect optimal blends of grants, strategic debt, and non-dilutive instruments to preserve founder sovereignty.
-                    </p>
-                </div>
-
-                <!-- Pillar 3 -->
-                <div class="elite-card bg-janus-charcoal p-10 md:p-12 group cursor-pointer">
-                    <div class="flex justify-between items-start mb-8">
-                        <span class="font-serif text-6xl text-janus-gold/20 group-hover:text-janus-gold/40 transition-colors">03</span>
-                        <i data-lucide="arrow-up-right" class="w-6 h-6 text-janus-gold opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all"></i>
-                    </div>
-                    <h3 class="font-serif text-2xl text-janus-pearl mb-4 italic">Narrative Sophistication</h3>
-                    <div class="w-12 h-px bg-janus-gold/30 mb-6 group-hover:w-full transition-all duration-500"></div>
-                    <p class="text-janus-silver font-light leading-relaxed text-sm">
-                        Translating technical complexity into compelling investment theses. We speak fluent institutional.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Architecture Section -->
-    <section id="architecture" class="py-32 md:py-48 bg-janus-charcoal">
-        <div class="max-w-7xl mx-auto px-6 lg:px-16">
-            <div class="grid lg:grid-cols-2 gap-24">
-                <div>
-                    <p class="text-xs tracking-mega uppercase text-janus-gold mb-6">Methodology</p>
-                    <h2 class="font-serif text-5xl md:text-6xl text-janus-pearl font-light mb-12 leading-tight">
-                        The Architecture<br>of <span class="italic">Victory</span>
-                    </h2>
-                    
-                    <div class="space-y-12">
-                        <div class="group">
-                            <div class="flex items-baseline gap-6 mb-4">
-                                <span class="font-serif text-4xl text-janus-gold/40 group-hover:text-janus-gold transition-colors">I</span>
-                                <h3 class="text-xl text-janus-pearl font-light">Founder Alignment</h3>
-                            </div>
-                            <p class="text-janus-silver font-light pl-16 border-l border-janus-steel group-hover:border-janus-gold transition-colors">
-                                Rigorous assessment of mutual conviction. We engage only where we see asymmetric return potential.
-                            </p>
-                        </div>
-
-                        <div class="group">
-                            <div class="flex items-baseline gap-6 mb-4">
-                                <span class="font-serif text-4xl text-janus-gold/40 group-hover:text-janus-gold transition-colors">II</span>
-                                <h3 class="text-xl text-janus-pearl font-light">Business Deconstruction</h3>
-                            </div>
-                            <p class="text-janus-silver font-light pl-16 border-l border-janus-steel group-hover:border-janus-gold transition-colors">
-                                Deep analysis of scalability vectors, defensibility mechanisms, and narrative potential.
-                            </p>
-                        </div>
-
-                        <div class="group">
-                            <div class="flex items-baseline gap-6 mb-4">
-                                <span class="font-serif text-4xl text-janus-gold/40 group-hover:text-janus-gold transition-colors">III</span>
-                                <h3 class="text-xl text-janus-pearl font-light">Capital Architecture</h3>
-                            </div>
-                            <p class="text-janus-silver font-light pl-16 border-l border-janus-steel group-hover:border-janus-gold transition-colors">
-                                Designing the optimal capital mix—equity, debt, grants, and strategic instruments—for your specific trajectory.
-                            </p>
-                        </div>
-
-                        <div class="group">
-                            <div class="flex items-baseline gap-6 mb-4">
-                                <span class="font-serif text-4xl text-janus-gold/40 group-hover:text-janus-gold transition-colors">IV</span>
-                                <h3 class="text-xl text-janus-pearl font-light">Execution & Closure</h3>
-                            </div>
-                            <p class="text-janus-silver font-light pl-16 border-l border-janus-steel group-hover:border-janus-gold transition-colors">
-                                Managing the entire capital raise while protecting founder focus. Precision execution.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="relative">
-                    <div class="sticky top-32">
-                        <div class="aspect-square bg-janus-graphite border border-janus-steel/30 p-12 flex flex-col justify-between">
-                            <div>
-                                <p class="text-xs tracking-ultra uppercase text-janus-gold mb-4">Current Mandate</p>
-                                <h3 class="font-serif text-3xl text-janus-pearl italic">Space Tech Propulsion</h3>
-                                <p class="text-janus-silver mt-4 font-light">Deep tech financing architecture with strategic sovereign partners.</p>
-                            </div>
-                            
-                            <div class="space-y-4">
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-janus-silver">Status</span>
-                                    <span class="text-janus-gold">In Progress</span>
-                                </div>
-                                <div class="w-full h-px bg-janus-steel"></div>
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-janus-silver">Target</span>
-                                    <span class="text-janus-pearl">$50M Series B</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Transactions Section -->
-    <section id="transactions" class="py-32 bg-janus-dark">
-        <div class="max-w-7xl mx-auto px-6 lg:px-16">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-20">
-                <div>
-                    <p class="text-xs tracking-mega uppercase text-janus-gold mb-6">Selected Transactions</p>
-                    <h2 class="font-serif text-5xl text-janus-pearl font-light">Evidence of <span class="italic">Craft</span></h2>
-                </div>
-                <div class="mt-8 md:mt-0 flex gap-4">
-                    <button class="filter-btn active px-6 py-2 text-xs tracking-ultra uppercase border border-janus-gold bg-janus-gold text-janus-dark transition-all" data-filter="all">All</button>
-                    <button class="filter-btn px-6 py-2 text-xs tracking-ultra uppercase border border-janus-steel text-janus-silver hover:border-janus-gold hover:text-janus-gold transition-all" data-filter="deeptech">Deep Tech</button>
-                    <button class="filter-btn px-6 py-2 text-xs tracking-ultra uppercase border border-janus-steel text-janus-silver hover:border-janus-gold hover:text-janus-gold transition-all" data-filter="healthcare">Healthcare</button>
-                </div>
-            </div>
-
-            <div class="space-y-4" id="case-studies">
-                <!-- Case 1 -->
-                <div class="case-study group border border-janus-steel/30 hover:border-janus-gold/50 transition-all duration-500" data-category="deeptech">
-                    <div class="p-8 md:p-12 cursor-pointer" onclick="toggleCase(this)">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                            <div class="flex-1">
-                                <div class="flex items-center gap-4 mb-3">
-                                    <span class="text-xs tracking-ultra uppercase text-janus-gold">Semiconductor</span>
-                                    <span class="w-1 h-1 bg-janus-steel rounded-full"></span>
-                                    <span class="text-xs text-janus-silver">2023</span>
-                                </div>
-                                <h3 class="font-serif text-3xl md:text-4xl text-janus-pearl font-light group-hover:text-janus-gold transition-colors">Gas Sensor Startup</h3>
-                            </div>
-                            <div class="flex items-center gap-8">
-                                <div class="text-right hidden md:block">
-                                    <p class="text-2xl font-serif text-janus-pearl">₹25Cr</p>
-                                    <p class="text-xs text-janus-gold uppercase tracking-ultra">39% Above Target</p>
-                                </div>
-                                <div class="w-12 h-12 border border-janus-steel rounded-full flex items-center justify-center group-hover:border-janus-gold group-hover:bg-janus-gold transition-all">
-                                    <i data-lucide="plus" class="w-5 h-5 text-janus-pearl group-hover:text-janus-dark transition-colors case-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="case-study-content">
-                        <div class="case-study-inner px-8 md:px-12 pb-12">
-                            <div class="pt-8 border-t border-janus-steel/30 grid md:grid-cols-3 gap-8">
-                                <div>
-                                    <h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-3">Architecture</h4>
-                                    <p class="text-janus-silver font-light text-sm leading-relaxed">Structured ₹25Cr round integrating family office capital with government grants. Optimized for minimal dilution.</p>
-                                </div>
-                                <div>
-                                    <h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-3">Outcome</h4>
-                                    <p class="text-janus-silver font-light text-sm leading-relaxed">39% beyond target raise. Extended runway by 18 months through strategic grant integration.</p>
-                                </div>
-                                <div>
-                                    <h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-3">Alpha Generated</h4>
-                                    <p class="text-janus-silver font-light text-sm leading-relaxed">15% reduction in effective dilution vs. standard venture structure.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Case 2 -->
-                <div class="case-study group border border-janus-steel/30 hover:border-janus-gold/50 transition-all duration-500" data-category="deeptech">
-                    <div class="p-8 md:p-12 cursor-pointer" onclick="toggleCase(this)">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                            <div class="flex-1">
-                                <div class="flex items-center gap-4 mb-3">
-                                    <span class="text-xs tracking-ultra uppercase text-janus-gold">Robotics</span>
-                                    <span class="w-1 h-1 bg-janus-steel rounded-full"></span>
-                                    <span class="text-xs text-janus-silver">2022</span>
-                                </div>
-                                <h3 class="font-serif text-3xl md:text-4xl text-janus-pearl font-light group-hover:text-janus-gold transition-colors">Underwater Robotics</h3>
-                            </div>
-                            <div class="flex items-center gap-8">
-                                <div class="text-right hidden md:block">
-                                    <p class="text-2xl font-serif text-janus-pearl">$200M</p>
-                                    <p class="text-xs text-janus-gold uppercase tracking-ultra">Series C</p>
-                                </div>
-                                <div class="w-12 h-12 border border-janus-steel rounded-full flex items-center justify-center group-hover:border-janus-gold group-hover:bg-janus-gold transition-all">
-                                    <i data-lucide="plus" class="w-5 h-5 text-janus-pearl group-hover:text-janus-dark transition-colors case-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="case-study-content">
-                        <div class="case-study-inner px-8 md:px-12 pb-12">
-                            <div class="pt-8 border-t border-janus-steel/30 grid md:grid-cols-3 gap-8">
-                                <div>
-                                    <h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-3">Architecture</h4>
-                                    <p class="text-janus-silver font-light text-sm leading-relaxed">Built business plan and dual GTM strategy from concept phase. Architected international expansion framework.</p>
-                                </div>
-                                <div>
-                                    <h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-3">Outcome</h4>
-                                    <p class="text-janus-silver font-light text-sm leading-relaxed">$200M secured based on clear scalability narrative. Valuation 40% above market comparables.</p>
-                                </div>
-                                <div>
-                                    <h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-3">Alpha Generated</h4>
-                                    <p class="text-janus-silver font-light text-sm leading-relaxed">Strategic sovereign wealth fund entry at premium to standard venture terms.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Case 3 -->
-                <div class="case-study group border border-janus-steel/30 hover:border-janus-gold/50 transition-all duration-500" data-category="healthcare">
-                    <div class="p-8 md:p-12 cursor-pointer" onclick="toggleCase(this)">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                            <div class="flex-1">
-                                <div class="flex items-center gap-4 mb-3">
-                                    <span class="text-xs tracking-ultra uppercase text-janus-gold">MedTech</span>
-                                    <span class="w-1 h-1 bg-janus-steel rounded-full"></span>
-                                    <span class="text-xs text-janus-silver">2023</span>
-                                </div>
-                                <h3 class="font-serif text-3xl md:text-4xl text-janus-pearl font-light group-hover:text-janus-gold transition-colors">Handheld ECG Device</h3>
-                            </div>
-                            <div class="flex items-center gap-8">
-                                <div class="text-right hidden md:block">
-                                    <p class="text-2xl font-serif text-janus-pearl">₹50Cr</p>
-                                    <p class="text-xs text-janus-gold uppercase tracking-ultra">Strategic Tranches</p>
-                                </div>
-                                <div class="w-12 h-12 border border-janus-steel rounded-full flex items-center justify-center group-hover:border-janus-gold group-hover:bg-janus-gold transition-all">
-                                    <i data-lucide="plus" class="w-5 h-5 text-janus-pearl group-hover:text-janus-dark transition-colors case-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="case-study-content">
-                        <div class="case-study-inner px-8 md:px-12 pb-12">
-                            <div class="pt-8 border-t border-janus-steel/30 grid md:grid-cols-3 gap-8">
-                                <div>
-                                    <h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-3">Architecture</h4>
-                                    <p class="text-janus-silver font-light text-sm leading-relaxed">₹50Cr in two strategic tranches aligned with regulatory milestones. Integrated CE mark funding.</p>
-                                </div>
-                                <div>
-                                    <h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-3">Outcome</h4>
-                                    <p class="text-janus-silver font-light text-sm leading-relaxed">Efficient capital deployment with validation gates. Zero down-round risk.</p>
-                                </div>
-                                <div>
-                                    <h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-3">Alpha Generated</h4>
-                                    <p class="text-janus-silver font-light text-sm leading-relaxed">Milestone-based releases ensured 100% capital efficiency.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Case 4 -->
-                <div class="case-study group border border-janus-steel/30 hover:border-janus-gold/50 transition-all duration-500" data-category="deeptech">
-                    <div class="p-8 md:p-12 cursor-pointer" onclick="toggleCase(this)">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                            <div class="flex-1">
-                                <div class="flex items-center gap-4 mb-3">
-                                    <span class="text-xs tracking-ultra uppercase text-janus-gold">Communications</span>
-                                    <span class="w-1 h-1 bg-janus-steel rounded-full"></span>
-                                    <span class="text-xs text-janus-silver">2022</span>
-                                </div>
-                                <h3 class="font-serif text-3xl md:text-4xl text-janus-pearl font-light group-hover:text-janus-gold transition-colors">Li-Fi Scale-Up</h3>
-                            </div>
-                            <div class="flex items-center gap-8">
-                                <div class="text-right hidden md:block">
-                                    <p class="text-2xl font-serif text-janus-pearl">₹35Cr</p>
-                                    <p class="text-xs text-janus-gold uppercase tracking-ultra">Oversubscribed</p>
-                                </div>
-                                <div class="w-12 h-12 border border-janus-steel rounded-full flex items-center justify-center group-hover:border-janus-gold group-hover:bg-janus-gold transition-all">
-                                    <i data-lucide="plus" class="w-5 h-5 text-janus-pearl group-hover:text-janus-dark transition-colors case-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="case-study-content">
-                        <div class="case-study-inner px-8 md:px-12 pb-12">
-                            <div class="pt-8 border-t border-janus-steel/30 grid md:grid-cols-3 gap-8">
-                                <div>
-                                    <h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-3">Architecture</h4>
-                                    <p class="text-janus-silver font-light text-sm leading-relaxed">Structured oversubscribed round with additional ₹10Cr at premium valuation. Government funding integration.</p>
-                                </div>
-                                <div>
-                                    <h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-3">Outcome</h4>
-                                    <p class="text-janus-silver font-light text-sm leading-relaxed">Controlled dilution with strategic investor consortium.</p>
-                                </div>
-                                <div>
-                                    <h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-3">Alpha Generated</h4>
-                                    <p class="text-janus-silver font-light text-sm leading-relaxed">12% valuation premium through competitive process design.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Intelligence Section -->
-    <section id="intelligence" class="py-32 bg-janus-charcoal relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-janus-gold/5 to-transparent"></div>
-        
-        <div class="max-w-7xl mx-auto px-6 lg:px-16 relative z-10">
-            <div class="grid lg:grid-cols-2 gap-24 items-center">
-                <div>
-                    <p class="text-xs tracking-mega uppercase text-janus-gold mb-6">Janus Intelligence</p>
-                    <h2 class="font-serif text-5xl md:text-6xl text-janus-pearl font-light mb-8 leading-tight">
-                        Sector-Agnostic.<br>
-                        <span class="italic text-janus-gold">Pattern-</span>Obsessed.
-                    </h2>
-                    <div class="space-y-6 text-janus-silver font-light text-lg leading-relaxed">
-                        <p>
-                            While deep tech remains our passion, we follow exceptional founders wherever they build. From semiconductor sensors to handheld medical devices, from Li-Fi communications to propulsion engines.
-                        </p>
-                        <p class="border-l-2 border-janus-gold pl-6 text-janus-pearl">
-                            Our expertise lies not in specific industries, but in identifying scalable patterns and articulating them with institutional precision.
-                        </p>
-                    </div>
-
-                    <div class="mt-12 grid grid-cols-2 gap-8">
-                        <div class="border-t border-janus-steel pt-6">
-                            <p class="font-serif text-4xl text-janus-gold mb-2">₹500Cr+</p>
-                            <p class="text-xs tracking-ultra uppercase text-janus-silver">Capital Architected</p>
-                        </div>
-                        <div class="border-t border-janus-steel pt-6">
-                            <p class="font-serif text-4xl text-janus-gold mb-2">12</p>
-                            <p class="text-xs tracking-ultra uppercase text-janus-silver">Active Mandates</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-6">
-                    <div class="bg-janus-dark p-8 border border-janus-steel/30 hover:border-janus-gold/30 transition-all duration-500 group">
-                        <div class="flex justify-between items-start mb-4">
-                            <i data-lucide="cpu" class="w-8 h-8 text-janus-gold/50 group-hover:text-janus-gold transition-colors"></i>
-                            <span class="text-xs text-janus-silver">Deep Tech</span>
-                        </div>
-                        <h3 class="font-serif text-2xl text-janus-pearl mb-2">Semiconductors & Sensors</h3>
-                        <p class="text-sm text-janus-silver font-light">Gas sensors, photonics, MEMS devices</p>
-                    </div>
-
-                    <div class="bg-janus-dark p-8 border border-janus-steel/30 hover:border-janus-gold/30 transition-all duration-500 group">
-                        <div class="flex justify-between items-start mb-4">
-                            <i data-lucide="activity" class="w-8 h-8 text-janus-gold/50 group-hover:text-janus-gold transition-colors"></i>
-                            <span class="text-xs text-janus-silver">Healthcare</span>
-                        </div>
-                        <h3 class="font-serif text-2xl text-janus-pearl mb-2">Medical Devices</h3>
-                        <p class="text-sm text-janus-silver font-light">Diagnostic equipment, monitoring systems</p>
-                    </div>
-
-                    <div class="bg-janus-dark p-8 border border-janus-steel/30 hover:border-janus-gold/30 transition-all duration-500 group">
-                        <div class="flex justify-between items-start mb-4">
-                            <i data-lucide="radio" class="w-8 h-8 text-janus-gold/50 group-hover:text-janus-gold transition-colors"></i>
-                            <span class="text-xs text-janus-silver">Communications</span>
-                        </div>
-                        <h3 class="font-serif text-2xl text-janus-pearl mb-2">Next-Gen Connectivity</h3>
-                        <p class="text-sm text-janus-silver font-light">Li-Fi, 5G infrastructure, quantum</p>
-                    </div>
-
-                    <div class="bg-janus-dark p-8 border border-janus-steel/30 hover:border-janus-gold/30 transition-all duration-500 group">
-                        <div class="flex justify-between items-start mb-4">
-                            <i data-lucide="rocket" class="w-8 h-8 text-janus-gold/50 group-hover:text-janus-gold transition-colors"></i>
-                            <span class="text-xs text-janus-silver">Aerospace</span>
-                        </div>
-                        <h3 class="font-serif text-2xl text-janus-pearl mb-2">Propulsion & Space Tech</h3>
-                        <p class="text-sm text-janus-silver font-light">Electric propulsion, satellite systems</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-32 md:py-48 bg-janus-dark relative">
-        <div class="max-w-4xl mx-auto px-6 lg:px-16 text-center">
-            <p class="text-xs tracking-mega uppercase text-janus-gold mb-8">Initiate</p>
-            <h2 class="font-serif text-5xl md:text-7xl text-janus-pearl font-light mb-12 leading-tight">
-                Begin the<br>
-                <span class="italic">Conversation</span>
-            </h2>
-            
-            <p class="text-janus-silver font-light text-lg mb-16 max-w-2xl mx-auto">
-                We engage selectively with founders who demonstrate exceptional vision and execution capability. If you're building something extraordinary, we want to architect your capital.
-            </p>
-
-            <form class="text-left space-y-12 max-w-2xl mx-auto" onsubmit="handleSubmit(event)">
-                <div class="grid md:grid-cols-2 gap-12">
-                    <div class="space-y-2">
-                        <label class="text-xs tracking-ultra uppercase text-janus-silver">Name</label>
-                        <input type="text" class="elite-input w-full py-4 text-janus-pearl text-lg font-light" placeholder="Founder Name" required>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs tracking-ultra uppercase text-janus-silver">Organization</label>
-                        <input type="text" class="elite-input w-full py-4 text-janus-pearl text-lg font-light" placeholder="Company Name" required>
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <label class="text-xs tracking-ultra uppercase text-janus-silver">Email</label>
-                    <input type="email" class="elite-input w-full py-4 text-janus-pearl text-lg font-light" placeholder="founder@company.com" required>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-12">
-                    <div class="space-y-2">
-                        <label class="text-xs tracking-ultra uppercase text-janus-silver">Sector</label>
-                        <select class="elite-input w-full py-4 text-janus-pearl text-lg font-light bg-transparent">
-                            <option value="" class="bg-janus-dark">Select Sector</option>
-                            <option value="deeptech" class="bg-janus-dark">Deep Tech</option>
-                            <option value="healthcare" class="bg-janus-dark">Healthcare</option>
-                            <option value="climate" class="bg-janus-dark">Climate Tech</option>
-                            <option value="space" class="bg-janus-dark">Space Tech</option>
-                            <option value="other" class="bg-janus-dark">Other</option>
-                        </select>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs tracking-ultra uppercase text-janus-silver">Capital Requirement</label>
-                        <select class="elite-input w-full py-4 text-janus-pearl text-lg font-light bg-transparent">
-                            <option value="" class="bg-janus-dark">Select Range</option>
-                            <option value="10-25" class="bg-janus-dark">₹10Cr – ₹25Cr</option>
-                            <option value="25-50" class="bg-janus-dark">₹25Cr – ₹50Cr</option>
-                            <option value="50-100" class="bg-janus-dark">₹50Cr – ₹100Cr</option>
-                            <option value="100+" class="bg-janus-dark">₹100Cr+</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <label class="text-xs tracking-ultra uppercase text-janus-silver">Your Vision</label>
-                    <textarea rows="4" class="elite-input w-full py-4 text-janus-pearl text-lg font-light resize-none" placeholder="Describe the problem you're solving and why you are uniquely positioned to solve it..." required></textarea>
-                </div>
-
-                <div class="pt-8 text-center">
-                    <button type="submit" class="magnetic-btn px-16 py-6 bg-janus-gold text-janus-dark text-xs tracking-ultra uppercase hover:shadow-[0_0_60px_rgba(201,169,98,0.4)] transition-all duration-500 relative overflow-hidden group">
-                        <span class="relative z-10">Submit Assessment</span>
-                        <div class="absolute inset-0 bg-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                    </button>
-                    <p class="mt-6 text-xs text-janus-silver font-light">We review every submission personally. Response within 48 hours.</p>
-                </div>
-            </form>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-janus-charcoal border-t border-janus-steel/30 py-16">
-        <div class="max-w-7xl mx-auto px-6 lg:px-16">
-            <div class="grid md:grid-cols-4 gap-12 mb-16">
-                <div class="md:col-span-2">
-                    <h3 class="font-serif text-3xl text-janus-pearl mb-4">JANUS<span class="text-janus-gold">.</span></h3>
-                    <p class="text-janus-silver font-light max-w-md">
-                        Institutional capital architecture for exceptional founders. We do not connect. We construct.
-                    </p>
-                </div>
-                
-                <div>
-                    <h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-6">Contact</h4>
-                    <div class="space-y-3 text-sm text-janus-silver font-light">
-                        <p>architects@janusventures.com</p>
-                        <p>+91 9167455974</p>
-                        <p>Mumbai, India</p>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-6">Presence</h4>
-                    <div class="space-y-3 text-sm text-janus-silver font-light">
-                        <p>Singapore</p>
-                        <p>Dubai</p>
-                        <p>London</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-janus-steel/30">
-                <p class="text-xs text-janus-silver font-light">© 2024 Janus Ventures. All rights reserved.</p>
-                <div class="flex gap-6 mt-4 md:mt-0">
-                    <a href="#" class="text-janus-silver hover:text-janus-gold transition-colors">
-                        <i data-lucide="linkedin" class="w-5 h-5"></i>
-                    </a>
-                    <a href="#" class="text-janus-silver hover:text-janus-gold transition-colors">
-                        <i data-lucide="twitter" class="w-5 h-5"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Toast -->
-    <div id="toast" class="fixed bottom-8 right-8 bg-janus-gold text-janus-dark px-8 py-4 transform translate-y-24 transition-transform duration-500 z-50 flex items-center gap-3">
-        <i data-lucide="check" class="w-5 h-5"></i>
-        <span class="text-sm tracking-ultra uppercase font-medium">Assessment Received</span>
-    </div>
-
-    <style>
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-        @keyframes slideUp {
-            to { transform: translateY(0); opacity: 1; }
-        }
-    </style>
-
-    <script>
-        // Initialize Lucide
-        lucide.createIcons();
-
-        // Loader
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('hidden');
-                // Trigger hero animations
-                document.querySelectorAll('.char-reveal').forEach((el, i) => {
-                    setTimeout(() => el.classList.add('visible'), i * 100);
-                });
-                document.querySelectorAll('.line-draw').forEach(el => {
-                    setTimeout(() => el.classList.add('visible'), 500);
-                });
-            }, 2000);
-        });
-
-        // Custom Cursor
-        const cursor = document.querySelector('.custom-cursor');
-        const cursorDot = document.querySelector('.cursor-dot');
-        
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX - 10 + 'px';
-            cursor.style.top = e.clientY - 10 + 'px';
-            cursorDot.style.left = e.clientX - 2 + 'px';
-            cursorDot.style.top = e.clientY - 2 + 'px';
-        });
-
-        document.addEventListener('mousedown', () => {
-            cursor.style.transform = 'scale(0.8)';
-        });
-
-        document.addEventListener('mouseup', () => {
-            cursor.style.transform = 'scale(1)';
-        });
-
-        // Magnetic Buttons
-        const magneticBtns = document.querySelectorAll('.magnetic-btn');
-        magneticBtns.forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
-            });
-            
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'translate(0, 0)';
-            });
-        });
-
-        // Intersection Observer for reveals
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        // Case Study Toggle
-        function toggleCase(element) {
-            const content = element.nextElementSibling;
-            const icon = element.querySelector('.case-icon');
-            
-            if (content.classList.contains('open')) {
-                content.classList.remove('open');
-                icon.style.transform = 'rotate(0deg)';
-            } else {
-                // Close others
-                document.querySelectorAll('.case-study-content.open').forEach(el => {
-                    el.classList.remove('open');
-                    el.previousElementSibling.querySelector('.case-icon').style.transform = 'rotate(0deg)';
-                });
-                
-                content.classList.add('open');
-                icon.style.transform = 'rotate(45deg)';
-            }
-        }
-
-        // Filter Cases
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const caseStudies = document.querySelectorAll('.case-study');
-
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Update active state
-                filterBtns.forEach(b => {
-                    b.classList.remove('bg-janus-gold', 'text-janus-dark', 'border-janus-gold');
-                    b.classList.add('text-janus-silver', 'border-janus-steel');
-                });
-                btn.classList.remove('text-janus-silver', 'border-janus-steel');
-                btn.classList.add('bg-janus-gold', 'text-janus-dark', 'border-janus-gold');
-
-                // Filter
-                const filter = btn.dataset.filter;
-                caseStudies.forEach(study => {
-                    if (filter === 'all' || study.dataset.category === filter) {
-                        study.style.display = 'block';
-                        setTimeout(() => study.style.opacity = '1', 10);
-                    } else {
-                        study.style.opacity = '0';
-                        setTimeout(() => study.style.display = 'none', 300);
-                    }
-                });
-            });
-        });
-
-        // Mobile Menu
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const closeMenuBtn = document.getElementById('close-menu');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.remove('translate-x-full');
-        });
-
-        closeMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.add('translate-x-full');
-        });
-
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('translate-x-full');
-            });
-        });
-
-        // Form Submit
-        function handleSubmit(e) {
-            e.preventDefault();
-            const toast = document.getElementById('toast');
-            toast.classList.remove('translate-y-24');
-            e.target.reset();
-            
-            setTimeout(() => {
-                toast.classList.add('translate-y-24');
-            }, 4000);
-        }
-
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Nav Background on Scroll
-        let lastScroll = 0;
-        const navbar = document.getElementById('navbar');
-        
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-            
-            if (currentScroll > 100) {
-                navbar.classList.add('bg-janus-dark/90', 'backdrop-blur-md', 'border-b', 'border-janus-steel/30');
-            } else {
-                navbar.classList.remove('bg-janus-dark/90', 'backdrop-blur-md', 'border-b', 'border-janus-steel/30');
-            }
-            
-            lastScroll = currentScroll;
-        });
-    </script>
+<div id="loader">
+<div class="text-center">
+<h1 class="font-serif text-3xl tracking-mega text-janus-pearl mb-8 opacity-0
+animate-[fadeIn_1s_ease_forwards]">JANUS VENTURE</h1>
+<div class="loader-line mx-auto"></div>
+<p class="mt-4 text-xs tracking-ultra text-janus-silver uppercase opacity-0
+animate-[fadeIn_1s_ease_0.5s_forwards]">Investment Banking</p>
+</div>
+</div>
+<div class="custom-cursor hidden md:block"></div>
+<div class="cursor-dot hidden md:block"></div>
+<div class="noise-overlay"></div>
+<nav id="navbar" class="fixed w-full z-50 transition-all duration-700 py-6 px-8 lg:px-16">
+<div class="flex justify-between items-center">
+<a href="#" class="group">
+<h1 class="font-serif text-2xl tracking-mega text-janus-pearl
+group-hover:text-janus-gold transition-colors duration-500">
+JANUS VENTURE<span class="text-janus-gold">.</span>
+</h1>
+</a>
+<div class="hidden md:flex items-center gap-12">
+<a href="#philosophy" class="nav-link text-xs tracking-ultra uppercase
+text-janus-silver hover:text-janus-pearl transition-colors py-2">Philosophy</a>
+<a href="#approach" class="nav-link text-xs tracking-ultra uppercase text-janus-silver
+hover:text-janus-pearl transition-colors py-2">Approach</a>
+<a href="#transactions" class="nav-link text-xs tracking-ultra uppercase
+text-janus-silver hover:text-janus-pearl transition-colors py-2">Transactions</a>
+<a href="#testimonials" class="nav-link text-xs tracking-ultra uppercase
+text-janus-silver hover:text-janus-pearl transition-colors py-2">Testimonials</a>
+<a href="#contact" class="magnetic-btn ml-8 px-8 py-3 border border-janus-gold/30
+text-janus-gold text-xs tracking-ultra uppercase hover:bg-janus-gold hover:text-janus-dark
+transition-all duration-500">
+Initiate
+</a>
+</div>
+<button id="mobile-menu-btn" class="md:hidden text-janus-pearl">
+<i data-lucide="menu" class="w-6 h-6"></i>
+</button>
+</div>
+</nav>
+<div id="mobile-menu" class="fixed inset-0 bg-janus-dark z-40 transform translate-x-full
+transition-transform duration-700 md:hidden flex flex-col items-center justify-center gap-8">
+<button id="close-menu" class="absolute top-6 right-8 text-janus-pearl">
+<i data-lucide="x" class="w-6 h-6"></i>
+</button>
+<a href="#philosophy" class="text-2xl font-serif text-janus-pearl hover:text-janus-gold
+transition-colors">Philosophy</a>
+<a href="#approach" class="text-2xl font-serif text-janus-pearl hover:text-janus-gold
+transition-colors">Approach</a>
+<a href="#transactions" class="text-2xl font-serif text-janus-pearl hover:text-janus-gold
+transition-colors">Transactions</a>
+<a href="#testimonials" class="text-2xl font-serif text-janus-pearl hover:text-janus-gold
+transition-colors">Testimonials</a>
+<a href="#contact" class="mt-8 px-8 py-3 border border-janus-gold text-janus-gold text-sm
+tracking-ultra uppercase">Initiate</a>
+</div>
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+<div class="ambient-glow top-1/4 left-1/4"></div>
+<div class="ambient-glow bottom-1/4 right-1/4"></div>
+<div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-16 text-center">
+<div class="mb-8 overflow-hidden">
+<p class="text-xs tracking-mega uppercase text-janus-gold reveal-text translate-y-full
+animate-[slideUp_1s_ease_0.5s_forwards] opacity-0">
+Institutional Investment Banking
+</p>
+</div>
+<h1 class="font-serif text-5xl md:text-7xl lg:text-9xl font-light text-janus-pearl
+leading-[0.9] mb-12 tracking-tight">
+<span class="block overflow-hidden">
+<span class="char-reveal inline-block">We</span>
+<span class="char-reveal inline-block italic text-janus-gold">build</span>
+</span>
+<span class="block overflow-hidden mt-2">
+<span class="char-reveal inline-block">the</span>
+<span class="char-reveal inline-block">future</span>
+</span>
+</h1>
+<div class="max-w-2xl mx-auto mb-16 overflow-hidden">
+<p class="text-lg md:text-xl text-janus-silver font-light leading-relaxed reveal-text
+translate-y-full animate-[slideUp_1s_ease_0.8s_forwards] opacity-0">
+An investment banking firm partnering with exceptional founders to raise
+institutional capital. We design financial foundations that transform ambition into enduring value.
+</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-6 justify-center items-center reveal-text
+translate-y-full animate-[slideUp_1s_ease_1s_forwards] opacity-0">
+<a href="#contact" class="magnetic-btn group relative px-10 py-5 bg-janus-gold
+text-janus-dark text-xs tracking-ultra uppercase overflow-hidden transition-all duration-500
+hover:shadow-[0_0_40px_rgba(201,169,98,0.3)]">
+<span class="relative z-10">Raise Capital</span>
+<div class="absolute inset-0 bg-white transform translate-y-full
+group-hover:translate-y-0 transition-transform duration-500"></div>
+</a>
+<a href="#philosophy" class="magnetic-btn px-10 py-5 border border-janus-steel
+text-janus-pearl text-xs tracking-ultra uppercase hover:border-janus-gold hover:text-janus-gold
+transition-all duration-500">
+Our Approach
+</a>
+</div>
+</div>
+<div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce
+opacity-30">
+<i data-lucide="chevron-down" class="w-6 h-6 text-janus-gold"></i>
+</div>
+</section>
+<section id="philosophy" class="relative py-32 md:py-48 bg-janus-charcoal">
+<div class="max-w-7xl mx-auto px-6 lg:px-16">
+<div class="grid lg:grid-cols-12 gap-16 items-center">
+<div class="lg:col-span-5 space-y-8">
+<div class="space-y-6">
+<p class="text-xs tracking-mega uppercase text-janus-gold">Our Philosophy</p>
+<h2 class="font-serif text-4xl md:text-6xl font-light text-janus-pearl leading-tight">
+Most firms <span class="italic text-janus-silver">connect.</span><br>
+We <span class="text-janus-gold">construct.</span>
+</h2>
+</div>
+<div class="w-24 h-px bg-gradient-to-r from-janus-gold to-transparent
+line-draw"></div>
+<div class="space-y-6 text-janus-silver font-light leading-relaxed text-lg">
+<p>
+At Janus Venture, we reject the transactional paradigm. We embed ourselves
+within your journey, combining capital market expertise with operational rigor to design win-win
+structures.
+</p>
+<p class="border-l-2 border-janus-gold pl-6 text-janus-pearl">
+We never raise capital for businesses we wouldn't invest in ourselves. Our
+capital is our credibility.
+</p>
+</div>
+<div class="pt-8">
+<div class="flex items-center gap-4 text-xs tracking-ultra uppercase
+text-janus-silver">
+<span class="w-12 h-px bg-janus-gold"></span>
+<span>Est. 2025</span>
+<span class="w-2 h-px bg-janus-steel"></span>
+<span>Mumbai</span>
+</div>
+</div>
+</div>
+<div class="lg:col-span-7 relative">
+<div class="relative aspect-[4/3] bg-janus-graphite overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-janus-steel/20 to-transparent
+opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="text-center p-12 border border-janus-gold/20">
+<i data-lucide="compass" class="w-16 h-16 text-janus-gold/40 mx-auto
+mb-6"></i>
+<p class="font-serif text-3xl text-janus-pearl italic">"Unity of Purpose"</p>
+<p class="mt-4 text-xs tracking-ultra uppercase
+text-janus-silver">Non-Negotiable Principle</p>
+</div>
+</div>
+</div>
+<div class="absolute -bottom-8 -right-8 w-48 h-48 border border-janus-gold/10
+-z-10"></div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-32 bg-janus-dark relative overflow-hidden">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))]
+from-janus-steel/5 via-transparent to-transparent"></div>
+<div class="max-w-7xl mx-auto px-6 lg:px-16 relative z-10">
+<div class="text-center mb-24">
+<p class="text-xs tracking-mega uppercase text-janus-gold mb-6">The Triad</p>
+<h2 class="font-serif text-4xl md:text-5xl text-janus-pearl font-light">How We
+Deliver</h2>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<div class="elite-card bg-janus-charcoal p-10 md:p-12 group cursor-pointer">
+<div class="flex justify-between items-start mb-8">
+<span class="font-serif text-6xl text-janus-gold/20 group-hover:text-janus-gold/40
+transition-colors">01</span>
+<i data-lucide="arrow-up-right" class="w-6 h-6 text-janus-gold opacity-0
+group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all"></i>
+</div>
+<h3 class="font-serif text-2xl text-janus-pearl mb-4 italic">Co-Invested
+Conviction</h3>
+<div class="w-12 h-px bg-janus-gold/30 mb-6 group-hover:w-full transition-all
+duration-500"></div>
+<p class="text-janus-silver font-light leading-relaxed text-sm">
+We deploy our own capital in every transaction. Complete alignment. Shared
+risk. True partnership.
+</p>
+</div>
+<div class="elite-card bg-janus-charcoal p-10 md:p-12 group cursor-pointer">
+<div class="flex justify-between items-start mb-8">
+<span class="font-serif text-6xl text-janus-gold/20 group-hover:text-janus-gold/40
+transition-colors">02</span>
+<i data-lucide="arrow-up-right" class="w-6 h-6 text-janus-gold opacity-0
+group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all"></i>
+</div>
+<h3 class="font-serif text-2xl text-janus-pearl mb-4 italic">Capital Engineering</h3>
+<div class="w-12 h-px bg-janus-gold/30 mb-6 group-hover:w-full transition-all
+duration-500"></div>
+<p class="text-janus-silver font-light leading-relaxed text-sm">
+Beyond equity. We design optimal blends of grants, strategic debt, and
+non-dilutive instruments to preserve founder control.
+</p>
+</div>
+<div class="elite-card bg-janus-charcoal p-10 md:p-12 group cursor-pointer">
+<div class="flex justify-between items-start mb-8">
+<span class="font-serif text-6xl text-janus-gold/20 group-hover:text-janus-gold/40
+transition-colors">03</span>
+<i data-lucide="arrow-up-right" class="w-6 h-6 text-janus-gold opacity-0
+group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all"></i>
+</div>
+<h3 class="font-serif text-2xl text-janus-pearl mb-4 italic">Narrative
+Sophistication</h3>
+<div class="w-12 h-px bg-janus-gold/30 mb-6 group-hover:w-full transition-all
+duration-500"></div>
+<p class="text-janus-silver font-light leading-relaxed text-sm">
+Translating technical complexity into compelling investment theses. We speak
+fluent institutional.
+</p>
+</div>
+</div>
+</div>
+</section>
+<section id="approach" class="py-32 md:py-48 bg-janus-charcoal">
+<div class="max-w-7xl mx-auto px-6 lg:px-16">
+<div class="grid lg:grid-cols-2 gap-24">
+<div>
+<p class="text-xs tracking-mega uppercase text-janus-gold mb-6">Our
+Approach</p>
+<h2 class="font-serif text-5xl md:text-6xl text-janus-pearl font-light mb-12
+leading-tight">
+Designed for<br><span class="italic">Excellence</span>
+</h2>
+<div class="space-y-12">
+<div class="group">
+<div class="flex items-baseline gap-6 mb-4">
+<span class="font-serif text-4xl text-janus-gold/40
+group-hover:text-janus-gold transition-colors">I</span>
+<h3 class="text-xl text-janus-pearl font-light">Founder Alignment</h3>
+</div>
+<p class="text-janus-silver font-light pl-16 border-l border-janus-steel
+group-hover:border-janus-gold transition-colors">
+Rigorous assessment of mutual conviction. We engage only where we see
+asymmetric return potential.
+</p>
+</div>
+<div class="group">
+<div class="flex items-baseline gap-6 mb-4">
+<span class="font-serif text-4xl text-janus-gold/40
+group-hover:text-janus-gold transition-colors">II</span>
+<h3 class="text-xl text-janus-pearl font-light">Strategic Design</h3>
+</div>
+<p class="text-janus-silver font-light pl-16 border-l border-janus-steel
+group-hover:border-janus-gold transition-colors">
+Deep analysis of scalability vectors, defensibility mechanisms, and capital
+structure optimization.
+</p>
+</div>
+<div class="group">
+<div class="flex items-baseline gap-6 mb-4">
+<span class="font-serif text-4xl text-janus-gold/40
+group-hover:text-janus-gold transition-colors">III</span>
+<h3 class="text-xl text-janus-pearl font-light">Investor Matching</h3>
+</div>
+<p class="text-janus-silver font-light pl-16 border-l border-janus-steel
+group-hover:border-janus-gold transition-colors">
+Curating the right institutional partners—family offices, venture funds, and
+strategic investors.
+</p>
+</div>
+<div class="group">
+<div class="flex items-baseline gap-6 mb-4">
+<span class="font-serif text-4xl text-janus-gold/40
+group-hover:text-janus-gold transition-colors">IV</span>
+<h3 class="text-xl text-janus-pearl font-light">Execution & Closure</h3>
+</div>
+<p class="text-janus-silver font-light pl-16 border-l border-janus-steel
+group-hover:border-janus-gold transition-colors">
+Managing the entire capital raise while protecting founder focus. Precision
+execution.
+</p>
+</div>
+</div>
+</div>
+<div class="relative">
+<div class="sticky top-32">
+<div class="aspect-[4/5] bg-janus-graphite border border-janus-steel/30 p-12 flex
+flex-col justify-center items-center text-center">
+<i data-lucide="building-2" class="w-24 h-24 text-janus-gold/30 mb-8"></i>
+<h3 class="font-serif text-3xl text-janus-pearl italic mb-4">Investment
+Banking</h3>
+<p class="text-janus-silver font-light leading-relaxed">
+We are not venture capital. We are your investment banking partner,
+dedicated to designing and executing your capital raise.
+</p>
+<div class="mt-8 w-16 h-px bg-janus-gold"></div>
+<p class="mt-6 text-xs tracking-ultra uppercase text-janus-silver">Mumbai</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="transactions" class="py-32 bg-janus-dark">
+<div class="max-w-7xl mx-auto px-6 lg:px-16">
+<div class="flex flex-col md:flex-row justify-between items-end mb-20">
+<div>
+<p class="text-xs tracking-mega uppercase text-janus-gold mb-6">Selected
+Transactions</p>
+<h2 class="font-serif text-5xl text-janus-pearl font-light">Evidence of <span
+class="italic">Craft</span></h2>
+</div>
+<div class="mt-8 md:mt-0 flex gap-4">
+<button class="filter-btn active px-6 py-2 text-xs tracking-ultra uppercase border
+border-janus-gold bg-janus-gold text-janus-dark transition-all" data-filter="all">All</button>
+<button class="filter-btn px-6 py-2 text-xs tracking-ultra uppercase border
+border-janus-steel text-janus-silver hover:border-janus-gold hover:text-janus-gold transition-all"
+data-filter="completed">Completed</button>
+<button class="filter-btn px-6 py-2 text-xs tracking-ultra uppercase border
+border-janus-steel text-janus-silver hover:border-janus-gold hover:text-janus-gold transition-all"
+data-filter="progress">In Progress</button>
+</div>
+</div>
+<div class="space-y-4" id="case-studies">
+<div class="case-study group border border-janus-steel/30
+hover:border-janus-gold/50 transition-all duration-500 bg-janus-charcoal"
+data-category="completed">
+<div class="case-study-header p-8 md:p-12 cursor-pointer"
+onclick="toggleCase(this)">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center
+gap-6">
+<div class="flex-1 min-w-0">
+<div class="flex flex-wrap items-center gap-4 mb-3">
+<span class="text-xs tracking-ultra uppercase
+text-janus-gold">Semiconductor</span>
+<span class="w-1 h-1 bg-janus-steel rounded-full"></span>
+<span class="text-xs text-janus-silver">2025</span>
+<span class="px-2 py-1 border border-janus-gold/30 text-janus-gold
+text-[10px] tracking-ultra uppercase">Completed</span>
+</div>
+<h3 class="font-serif text-2xl md:text-3xl text-janus-pearl font-light
+group-hover:text-janus-gold transition-colors truncate">Gas Sensor Startup</h3>
+</div>
+<div class="flex items-center gap-8 flex-shrink-0">
+<div class="text-right hidden md:block">
+<p class="text-xl font-serif text-janus-pearl">₹25Cr</p>
+<p class="text-xs text-janus-gold uppercase tracking-ultra">Seed
+Round</p>
+</div>
+<div class="w-10 h-10 border border-janus-steel rounded-full flex
+items-center justify-center group-hover:border-janus-gold group-hover:bg-janus-gold
+transition-all flex-shrink-0">
+<i data-lucide="plus" class="w-4 h-4 text-janus-pearl
+group-hover:text-janus-dark transition-colors case-icon"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="case-study-content">
+<div class="case-study-inner px-8 md:px-12 pb-12">
+<div class="pt-8 border-t border-janus-steel/30 grid md:grid-cols-3 gap-8">
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold
+mb-3">Structure</h4>
+<p class="text-janus-silver font-light text-sm leading-relaxed">Structured
+₹25Cr seed round integrating family office capital with government grants.</p>
+</div>
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold
+mb-3">Outcome</h4>
+<p class="text-janus-silver font-light text-sm
+leading-relaxed">Successfully closed with optimal capital stack and extended runway.</p>
+</div>
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-3">Key
+Insight</h4>
+<p class="text-janus-silver font-light text-sm leading-relaxed">Integration
+of non-dilutive capital reduced effective dilution.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="case-study group border border-janus-steel/30
+hover:border-janus-gold/50 transition-all duration-500 bg-janus-charcoal"
+data-category="completed">
+<div class="case-study-header p-8 md:p-12 cursor-pointer"
+onclick="toggleCase(this)">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center
+gap-6">
+<div class="flex-1 min-w-0">
+<div class="flex flex-wrap items-center gap-4 mb-3">
+<span class="text-xs tracking-ultra uppercase
+text-janus-gold">Robotics</span>
+<span class="w-1 h-1 bg-janus-steel rounded-full"></span>
+<span class="text-xs text-janus-silver">2025</span>
+<span class="px-2 py-1 border border-janus-gold/30 text-janus-gold
+text-[10px] tracking-ultra uppercase">Completed</span>
+</div>
+<h3 class="font-serif text-2xl md:text-3xl text-janus-pearl font-light
+group-hover:text-janus-gold transition-colors truncate">Underwater Robotics</h3>
+</div>
+<div class="flex items-center gap-8 flex-shrink-0">
+<div class="text-right hidden md:block">
+<p class="text-xl font-serif text-janus-pearl">₹2Cr</p>
+<p class="text-xs text-janus-gold uppercase tracking-ultra">Seed
+Round</p>
+</div>
+<div class="w-10 h-10 border border-janus-steel rounded-full flex
+items-center justify-center group-hover:border-janus-gold group-hover:bg-janus-gold
+transition-all flex-shrink-0">
+<i data-lucide="plus" class="w-4 h-4 text-janus-pearl
+group-hover:text-janus-dark transition-colors case-icon"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="case-study-content">
+<div class="case-study-inner px-8 md:px-12 pb-12">
+<div class="pt-8 border-t border-janus-steel/30 grid md:grid-cols-3 gap-8">
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold
+mb-3">Structure</h4>
+<p class="text-janus-silver font-light text-sm leading-relaxed">Built
+business plan and dual GTM strategy from concept. Designed seed financing structure.</p>
+</div>
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold
+mb-3">Outcome</h4>
+<p class="text-janus-silver font-light text-sm leading-relaxed">₹2Cr seed
+round secured based on clear scalability narrative.</p>
+</div>
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-3">Key
+Insight</h4>
+<p class="text-janus-silver font-light text-sm leading-relaxed">Clear
+articulation of TAM expansion strategy critical to valuation.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="case-study group border border-janus-steel/30
+hover:border-janus-gold/50 transition-all duration-500 bg-janus-charcoal"
+data-category="progress">
+<div class="case-study-header p-8 md:p-12 cursor-pointer"
+onclick="toggleCase(this)">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center
+gap-6">
+<div class="flex-1 min-w-0">
+<div class="flex flex-wrap items-center gap-4 mb-3">
+<span class="text-xs tracking-ultra uppercase
+text-janus-gold">Communications × Deep Tech</span>
+<span class="w-1 h-1 bg-janus-steel rounded-full"></span>
+<span class="text-xs text-janus-silver">2025</span>
+<span class="px-2 py-1 border border-janus-gold/30 text-janus-gold
+text-[10px] tracking-ultra uppercase animate-pulse">In Progress</span>
+</div>
+<h3 class="font-serif text-2xl md:text-3xl text-janus-pearl font-light
+group-hover:text-janus-gold transition-colors truncate">Li-Fi Scale-Up</h3>
+</div>
+<div class="flex items-center gap-8 flex-shrink-0">
+<div class="text-right hidden md:block">
+<p class="text-xl font-serif text-janus-pearl">₹25Cr</p>
+<p class="text-xs text-janus-gold uppercase tracking-ultra">Series A</p>
+</div>
+<div class="w-10 h-10 border border-janus-steel rounded-full flex
+items-center justify-center group-hover:border-janus-gold group-hover:bg-janus-gold
+transition-all flex-shrink-0">
+<i data-lucide="plus" class="w-4 h-4 text-janus-pearl
+group-hover:text-janus-dark transition-colors case-icon"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="case-study-content">
+<div class="case-study-inner px-8 md:px-12 pb-12">
+<div class="pt-8 border-t border-janus-steel/30 grid md:grid-cols-3 gap-8">
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold
+mb-3">Structure</h4>
+<p class="text-janus-silver font-light text-sm leading-relaxed">Structuring
+oversubscribed round with strategic investor consortium and government funding
+integration.</p>
+</div>
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold
+mb-3">Target</h4>
+<p class="text-janus-silver font-light text-sm leading-relaxed">₹25Cr
+Series A with controlled dilution objectives.</p>
+</div>
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold
+mb-3">Current Status</h4>
+<p class="text-janus-silver font-light text-sm leading-relaxed">Advanced
+negotiations with lead investors. Term sheet expected Q1 2025.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="case-study group border border-janus-steel/30
+hover:border-janus-gold/50 transition-all duration-500 bg-janus-charcoal"
+data-category="progress">
+<div class="case-study-header p-8 md:p-12 cursor-pointer"
+onclick="toggleCase(this)">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center
+gap-6">
+<div class="flex-1 min-w-0">
+<div class="flex flex-wrap items-center gap-4 mb-3">
+<span class="text-xs tracking-ultra uppercase text-janus-gold">Health
+Tech</span>
+<span class="w-1 h-1 bg-janus-steel rounded-full"></span>
+<span class="text-xs text-janus-silver">2025</span>
+<span class="px-2 py-1 border border-janus-gold/30 text-janus-gold
+text-[10px] tracking-ultra uppercase animate-pulse">In Progress</span>
+</div>
+<h3 class="font-serif text-2xl md:text-3xl text-janus-pearl font-light
+group-hover:text-janus-gold transition-colors truncate">Handheld 12-Lead ECG</h3>
+</div>
+<div class="flex items-center gap-8 flex-shrink-0">
+<div class="text-right hidden md:block">
+<p class="text-xl font-serif text-janus-pearl">₹50Cr</p>
+<p class="text-xs text-janus-gold uppercase tracking-ultra">2
+Tranches</p>
+</div>
+<div class="w-10 h-10 border border-janus-steel rounded-full flex
+items-center justify-center group-hover:border-janus-gold group-hover:bg-janus-gold
+transition-all flex-shrink-0">
+<i data-lucide="plus" class="w-4 h-4 text-janus-pearl
+group-hover:text-janus-dark transition-colors case-icon"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="case-study-content">
+<div class="case-study-inner px-8 md:px-12 pb-12">
+<div class="pt-8 border-t border-janus-steel/30 grid md:grid-cols-3 gap-8">
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold
+mb-3">Structure</h4>
+<p class="text-janus-silver font-light text-sm leading-relaxed">₹50Cr in
+two strategic tranches aligned with regulatory milestones. Recognized by PM Modi and Bill
+Gates.</p>
+</div>
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold
+mb-3">Structure</h4>
+<p class="text-janus-silver font-light text-sm leading-relaxed">Tranche 1:
+₹30Cr (immediate). Tranche 2: ₹20Cr (post regulatory clearance).</p>
+</div>
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold
+mb-3">Current Status</h4>
+<p class="text-janus-silver font-light text-sm leading-relaxed">Tranche 1
+documentation underway. Strategic healthcare investors engaged.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="case-study group border border-janus-steel/30
+hover:border-janus-gold/50 transition-all duration-500 bg-janus-charcoal"
+data-category="progress">
+<div class="case-study-header p-8 md:p-12 cursor-pointer"
+onclick="toggleCase(this)">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center
+gap-6">
+<div class="flex-1 min-w-0">
+<div class="flex flex-wrap items-center gap-4 mb-3">
+<span class="text-xs tracking-ultra uppercase text-janus-gold">Space
+Tech</span>
+<span class="w-1 h-1 bg-janus-steel rounded-full"></span>
+<span class="text-xs text-janus-silver">2025</span>
+<span class="px-2 py-1 border border-janus-gold/30 text-janus-gold
+text-[10px] tracking-ultra uppercase animate-pulse">In Progress</span>
+</div>
+<h3 class="font-serif text-2xl md:text-3xl text-janus-pearl font-light
+group-hover:text-janus-gold transition-colors truncate">Propulsion Engine</h3>
+</div>
+<div class="flex items-center gap-8 flex-shrink-0">
+<div class="text-right hidden md:block">
+<p class="text-xl font-serif text-janus-pearl">₹20Cr</p>
+<p class="text-xs text-janus-gold uppercase tracking-ultra">Series A</p>
+</div>
+<div class="w-10 h-10 border border-janus-steel rounded-full flex
+items-center justify-center group-hover:border-janus-gold group-hover:bg-janus-gold
+transition-all flex-shrink-0">
+<i data-lucide="plus" class="w-4 h-4 text-janus-pearl
+group-hover:text-janus-dark transition-colors case-icon"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="case-study-content">
+<div class="case-study-inner px-8 md:px-12 pb-12">
+<div class="pt-8 border-t border-janus-steel/30 grid md:grid-cols-3 gap-8">
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold
+mb-3">Structure</h4>
+<p class="text-janus-silver font-light text-sm leading-relaxed">Deep tech
+financing with strategic sovereign and corporate partners.</p>
+</div>
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold
+mb-3">Target</h4>
+<p class="text-janus-silver font-light text-sm leading-relaxed">₹20Cr
+Series A to fund prototype testing and regulatory pathway.</p>
+</div>
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold
+mb-3">Current Status</h4>
+<p class="text-janus-silver font-light text-sm leading-relaxed">Data room
+prepared. Initial conversations with defense and aerospace strategics.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="testimonials" class="py-32 bg-janus-charcoal relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent
+via-janus-gold/30 to-transparent"></div>
+<div class="max-w-7xl mx-auto px-6 lg:px-16">
+<div class="text-center mb-20">
+<p class="text-xs tracking-mega uppercase text-janus-gold mb-6">Relationships</p>
+<h2 class="font-serif text-5xl text-janus-pearl font-light">Words From <span
+class="italic">Partners</span></h2>
+</div>
+<div class="grid md:grid-cols-2 gap-8">
+<div class="testimonial-card bg-janus-dark p-10 border border-janus-steel/30">
+<div class="mb-8">
+<i data-lucide="quote" class="w-10 h-10 text-janus-gold/40"></i>
+</div>
+<p class="text-janus-pearl font-light text-lg leading-relaxed mb-8">
+"Janus Venture doesn't just connect you to capital—they design the entire
+structure. Their co-investment gave us confidence that they were truly aligned with our success.
+The ₹25Cr seed round they architected exceeded our expectations."
+</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-janus-steel/30 rounded-full flex items-center
+justify-center">
+<span class="text-janus-gold font-serif text-xl">A</span>
+</div>
+<div>
+<p class="text-janus-pearl font-medium">Founder</p>
+<p class="text-janus-silver text-sm">Semiconductor Gas Sensor Startup</p>
+</div>
+</div>
+</div>
+<div class="testimonial-card bg-janus-dark p-10 border border-janus-steel/30">
+<div class="mb-8">
+<i data-lucide="quote" class="w-10 h-10 text-janus-gold/40"></i>
+</div>
+<p class="text-janus-pearl font-light text-lg leading-relaxed mb-8">
+"From concept to close, they were embedded in our journey. Their ability to
+translate complex underwater robotics technology into a compelling investment narrative was
+exceptional. They are builders, not brokers."
+</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-janus-steel/30 rounded-full flex items-center
+justify-center">
+<span class="text-janus-gold font-serif text-xl">R</span>
+</div>
+<div>
+<p class="text-janus-pearl font-medium">CEO</p>
+<p class="text-janus-silver text-sm">Underwater Robotics Venture</p>
+</div>
+</div>
+</div>
+<div class="testimonial-card bg-janus-dark p-10 border border-janus-steel/30">
+<div class="mb-8">
+<i data-lucide="quote" class="w-10 h-10 text-janus-gold/40"></i>
+</div>
+<p class="text-janus-pearl font-light text-lg leading-relaxed mb-8">
+"What impressed us most was their selective approach. They don't take every
+mandate—only those where they see true potential. Their due diligence was rigorous, and their
+capital structure preserved our founder equity better than any traditional route."
+</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-janus-steel/30 rounded-full flex items-center
+justify-center">
+<span class="text-janus-gold font-serif text-xl">V</span>
+</div>
+<div>
+<p class="text-janus-pearl font-medium">Partner</p>
+<p class="text-janus-silver text-sm">Leading Family Office</p>
+</div>
+</div>
+</div>
+<div class="testimonial-card bg-janus-dark p-10 border border-janus-steel/30">
+<div class="mb-8">
+<i data-lucide="quote" class="w-10 h-10 text-janus-gold/40"></i>
+</div>
+<p class="text-janus-pearl font-light text-lg leading-relaxed mb-8">
+"Janus Venture brings institutional discipline to early-stage financing. Their
+understanding of both deep tech and capital markets is rare. They designed a tranched
+structure that de-risked our entry while ensuring the founder had runway to execute."
+</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-janus-steel/30 rounded-full flex items-center
+justify-center">
+<span class="text-janus-gold font-serif text-xl">S</span>
+</div>
+<div>
+<p class="text-janus-pearl font-medium">Investment Director</p>
+<p class="text-janus-silver text-sm">Venture Capital Fund</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="intelligence" class="py-32 bg-janus-dark relative overflow-hidden">
+<div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-janus-gold/5
+to-transparent"></div>
+<div class="max-w-7xl mx-auto px-6 lg:px-16 relative z-10">
+<div class="grid lg:grid-cols-2 gap-24 items-center">
+<div>
+<p class="text-xs tracking-mega uppercase text-janus-gold mb-6">Janus
+Intelligence</p>
+<h2 class="font-serif text-5xl md:text-6xl text-janus-pearl font-light mb-8
+leading-tight">
+Sector-Agnostic.<br>
+<span class="italic text-janus-gold">Pattern-</span>Obsessed.
+</h2>
+<div class="space-y-6 text-janus-silver font-light text-lg leading-relaxed">
+<p>
+While deep tech remains our passion, we follow exceptional founders
+wherever they build. From semiconductor sensors to handheld medical devices, from Li-Fi
+communications to propulsion engines.
+</p>
+<p class="border-l-2 border-janus-gold pl-6 text-janus-pearl">
+Our expertise lies not in specific industries, but in identifying scalable patterns
+and articulating them with institutional precision.
+</p>
+</div>
+<div class="mt-12 grid grid-cols-2 gap-8">
+<div class="border-t border-janus-steel pt-6">
+<p class="font-serif text-4xl text-janus-gold mb-2">₹35Cr+</p>
+<p class="text-xs tracking-ultra uppercase text-janus-silver">Capital
+Deployed</p>
+</div>
+<div class="border-t border-janus-steel pt-6">
+<p class="font-serif text-4xl text-janus-gold mb-2">3</p>
+<p class="text-xs tracking-ultra uppercase text-janus-silver">Active
+Mandates</p>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-janus-steel">
+<p class="text-sm text-janus-silver font-light">
+<span class="text-janus-gold">Chirayu Lodha</span>, Founder<br>
+₹100Cr+ total capital raised across portfolio
+</p>
+</div>
+</div>
+<div class="space-y-6">
+<div class="bg-janus-charcoal p-8 border border-janus-steel/30
+hover:border-janus-gold/30 transition-all duration-500 group">
+<div class="flex justify-between items-start mb-4">
+<i data-lucide="cpu" class="w-8 h-8 text-janus-gold/50
+group-hover:text-janus-gold transition-colors"></i>
+<span class="text-xs text-janus-silver">Deep Tech</span>
+</div>
+<h3 class="font-serif text-2xl text-janus-pearl mb-2">Semiconductors &
+Sensors</h3>
+<p class="text-sm text-janus-silver font-light">Gas sensors, photonics, MEMS
+devices</p>
+</div>
+<div class="bg-janus-charcoal p-8 border border-janus-steel/30
+hover:border-janus-gold/30 transition-all duration-500 group">
+<div class="flex justify-between items-start mb-4">
+<i data-lucide="activity" class="w-8 h-8 text-janus-gold/50
+group-hover:text-janus-gold transition-colors"></i>
+<span class="text-xs text-janus-silver">Healthcare</span>
+</div>
+<h3 class="font-serif text-2xl text-janus-pearl mb-2">Medical Devices</h3>
+<p class="text-sm text-janus-silver font-light">Diagnostic equipment, monitoring
+systems</p>
+</div>
+<div class="bg-janus-charcoal p-8 border border-janus-steel/30
+hover:border-janus-gold/30 transition-all duration-500 group">
+<div class="flex justify-between items-start mb-4">
+<i data-lucide="radio" class="w-8 h-8 text-janus-gold/50
+group-hover:text-janus-gold transition-colors"></i>
+<span class="text-xs text-janus-silver">Communications</span>
+</div>
+<h3 class="font-serif text-2xl text-janus-pearl mb-2">Next-Gen Connectivity</h3>
+<p class="text-sm text-janus-silver font-light">Li-Fi, 5G infrastructure,
+quantum</p>
+</div>
+<div class="bg-janus-charcoal p-8 border border-janus-steel/30
+hover:border-janus-gold/30 transition-all duration-500 group">
+<div class="flex justify-between items-start mb-4">
+<i data-lucide="rocket" class="w-8 h-8 text-janus-gold/50
+group-hover:text-janus-gold transition-colors"></i>
+<span class="text-xs text-janus-silver">Aerospace</span>
+</div>
+<h3 class="font-serif text-2xl text-janus-pearl mb-2">Propulsion & Space
+Tech</h3>
+<p class="text-sm text-janus-silver font-light">Electric propulsion, satellite
+systems</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="contact" class="py-32 md:py-48 bg-janus-dark relative">
+<div class="max-w-4xl mx-auto px-6 lg:px-16 text-center">
+<p class="text-xs tracking-mega uppercase text-janus-gold mb-8">Initiate</p>
+<h2 class="font-serif text-5xl md:text-7xl text-janus-pearl font-light mb-12 leading-tight">
+Begin the<br>
+<span class="italic">Conversation</span>
+</h2>
+<p class="text-janus-silver font-light text-lg mb-16 max-w-2xl mx-auto">
+We engage selectively with founders who demonstrate exceptional vision and
+execution capability. If you're building something extraordinary, we want to design your capital
+raise.
+</p>
+<form class="text-left space-y-12 max-w-2xl mx-auto" onsubmit="handleSubmit(event)">
+<div class="grid md:grid-cols-2 gap-12">
+<div class="space-y-2">
+<label class="text-xs tracking-ultra uppercase text-janus-silver">Name</label>
+<input type="text" class="elite-input w-full py-4 text-janus-pearl text-lg font-light"
+placeholder="Founder Name" required>
+</div>
+<div class="space-y-2">
+<label class="text-xs tracking-ultra uppercase
+text-janus-silver">Organization</label>
+<input type="text" class="elite-input w-full py-4 text-janus-pearl text-lg font-light"
+placeholder="Company Name" required>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-xs tracking-ultra uppercase text-janus-silver">Email</label>
+<input type="email" class="elite-input w-full py-4 text-janus-pearl text-lg font-light"
+placeholder="founder@company.com" required>
+</div>
+<div class="grid md:grid-cols-2 gap-12">
+<div class="space-y-2">
+<label class="text-xs tracking-ultra uppercase text-janus-silver">Sector</label>
+<select class="elite-input w-full py-4 text-janus-pearl text-lg font-light
+bg-transparent">
+<option value="" class="bg-janus-dark">Select Sector</option>
+<option value="deeptech" class="bg-janus-dark">Deep Tech</option>
+<option value="healthcare" class="bg-janus-dark">Healthcare</option>
+<option value="climate" class="bg-janus-dark">Climate Tech</option>
+<option value="space" class="bg-janus-dark">Space Tech</option>
+<option value="other" class="bg-janus-dark">Other</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-xs tracking-ultra uppercase text-janus-silver">Capital
+Requirement</label>
+<select class="elite-input w-full py-4 text-janus-pearl text-lg font-light
+bg-transparent">
+<option value="" class="bg-janus-dark">Select Range</option>
+<option value="2-10" class="bg-janus-dark">₹2Cr – ₹10Cr</option>
+<option value="10-25" class="bg-janus-dark">₹10Cr – ₹25Cr</option>
+<option value="25-50" class="bg-janus-dark">₹25Cr – ₹50Cr</option>
+<option value="50+" class="bg-janus-dark">₹50Cr+</option>
+</select>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-xs tracking-ultra uppercase text-janus-silver">Your Vision</label>
+<textarea rows="4" class="elite-input w-full py-4 text-janus-pearl text-lg font-light
+resize-none" placeholder="Describe the problem you're solving and why you are uniquely
+positioned to solve it..." required></textarea>
+</div>
+<div class="pt-8 text-center">
+<button type="submit" class="magnetic-btn px-16 py-6 bg-janus-gold
+text-janus-dark text-xs tracking-ultra uppercase hover:shadow-[0_0_60px_rgba(201,169,98,0.4)]
+transition-all duration-500 relative overflow-hidden group">
+<span class="relative z-10">Submit Assessment</span>
+<div class="absolute inset-0 bg-white transform translate-y-full
+group-hover:translate-y-0 transition-transform duration-500"></div>
+</button>
+<p class="mt-6 text-xs text-janus-silver font-light">We review every submission
+personally. Response within 48 hours.</p>
+</div>
+</form>
+</div>
+</section>
+<footer class="bg-janus-charcoal border-t border-janus-steel/30 py-16">
+<div class="max-w-7xl mx-auto px-6 lg:px-16">
+<div class="grid md:grid-cols-4 gap-12 mb-16">
+<div class="md:col-span-2">
+<h3 class="font-serif text-3xl text-janus-pearl mb-4">JANUS VENTURE<span
+class="text-janus-gold">.</span></h3>
+<p class="text-janus-silver font-light max-w-md">
+Institutional investment banking for exceptional founders. We do not connect. We
+construct.
+</p>
+</div>
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-6">Contact</h4>
+<div class="space-y-3 text-sm text-janus-silver font-light">
+<p>architects@janusventure.com</p>
+<p>Mumbai, India</p>
+</div>
+</div>
+<div>
+<h4 class="text-xs tracking-ultra uppercase text-janus-gold mb-6">Connect</h4>
+<div class="flex gap-4">
+<a href="#" class="text-janus-silver hover:text-janus-gold transition-colors">
+<i data-lucide="linkedin" class="w-5 h-5"></i>
+</a>
+<a href="#" class="text-janus-silver hover:text-janus-gold transition-colors">
+<i data-lucide="twitter" class="w-5 h-5"></i>
+</a>
+</div>
+</div>
+</div>
+<div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t
+border-janus-steel/30">
+<p class="text-xs text-janus-silver font-light">© 2025 Janus Venture. All rights
+reserved.</p>
+<p class="text-xs text-janus-silver font-light mt-4 md:mt-0">Founded by Chirayu
+Lodha</p>
+</div>
+</div>
+</footer>
+<div id="toast" class="fixed bottom-8 right-8 bg-janus-gold text-janus-dark px-8 py-4
+transform translate-y-24 transition-transform duration-500 z-50 flex items-center gap-3">
+<i data-lucide="check" class="w-5 h-5"></i>
+<span class="text-sm tracking-ultra uppercase font-medium">Assessment
+Received</span>
+</div>
+<style>
+@keyframes fadeIn {
+to { opacity: 1; }
+}
+@keyframes slideUp {
+to { transform: translateY(0); opacity: 1; }
+}
+</style>
+<script>
+lucide.createIcons();
+window.addEventListener('load', () => {
+setTimeout(() => {
+document.getElementById('loader').classList.add('hidden');
+document.querySelectorAll('.char-reveal').forEach((el, i) => {
+setTimeout(() => el.classList.add('visible'), i * 100);
+});
+document.querySelectorAll('.line-draw').forEach(el => {
+setTimeout(() => el.classList.add('visible'), 500);
+});
+}, 2000);
+});
+const cursor = document.querySelector('.custom-cursor');
+const cursorDot = document.querySelector('.cursor-dot');
+document.addEventListener('mousemove', (e) => {
+cursor.style.left = e.clientX - 10 + 'px';
+cursor.style.top = e.clientY - 10 + 'px';
+cursorDot.style.left = e.clientX - 2 + 'px';
+cursorDot.style.top = e.clientY - 2 + 'px';
+});
+document.addEventListener('mousedown', () => {
+cursor.style.transform = 'scale(0.8)';
+});
+document.addEventListener('mouseup', () => {
+cursor.style.transform = 'scale(1)';
+});
+const magneticBtns = document.querySelectorAll('.magnetic-btn');
+magneticBtns.forEach(btn => {
+btn.addEventListener('mousemove', (e) => {
+const rect = btn.getBoundingClientRect();
+const x = e.clientX - rect.left - rect.width / 2;
+const y = e.clientY - rect.top - rect.height / 2;
+btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+});
+btn.addEventListener('mouseleave', () => {
+btn.style.transform = 'translate(0, 0)';
+});
+});
+function toggleCase(element) {
+const caseStudy = element.closest('.case-study');
+const content = caseStudy.querySelector('.case-study-content');
+const icon = element.querySelector('.case-icon');
+if (content.classList.contains('open')) {
+content.classList.remove('open');
+icon.style.transform = 'rotate(0deg)';
+} else {
+document.querySelectorAll('.case-study-content.open').forEach(el => {
+el.classList.remove('open');
+el.closest('.case-study').querySelector('.case-icon').style.transform = 'rotate(0deg)';
+});
+content.classList.add('open');
+icon.style.transform = 'rotate(45deg)';
+}
+}
+const filterBtns = document.querySelectorAll('.filter-btn');
+const caseStudies = document.querySelectorAll('.case-study');
+filterBtns.forEach(btn => {
+btn.addEventListener('click', () => {
+filterBtns.forEach(b => {
+b.classList.remove('bg-janus-gold', 'text-janus-dark', 'border-janus-gold');
+b.classList.add('text-janus-silver', 'border-janus-steel');
+});
+btn.classList.remove('text-janus-silver', 'border-janus-steel');
+btn.classList.add('bg-janus-gold', 'text-janus-dark', 'border-janus-gold');
+const filter = btn.dataset.filter;
+caseStudies.forEach(study => {
+if (filter === 'all' || study.dataset.category === filter) {
+study.style.display = 'block';
+setTimeout(() => study.style.opacity = '1', 10);
+} else {
+study.style.opacity = '0';
+setTimeout(() => study.style.display = 'none', 300);
+}
+});
+});
+});
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+const closeMenuBtn = document.getElementById('close-menu');
+mobileMenuBtn.addEventListener('click', () => {
+mobileMenu.classList.remove('translate-x-full');
+});
+closeMenuBtn.addEventListener('click', () => {
+mobileMenu.classList.add('translate-x-full');
+});
+mobileMenu.querySelectorAll('a').forEach(link => {
+link.addEventListener('click', () => {
+mobileMenu.classList.add('translate-x-full');
+});
+});
+function handleSubmit(e) {
+e.preventDefault();
+const toast = document.getElementById('toast');
+toast.classList.remove('translate-y-24');
+e.target.reset();
+setTimeout(() => {
+toast.classList.add('translate-y-24');
+}, 4000);
+}
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+anchor.addEventListener('click', function (e) {
+e.preventDefault();
+const target = document.querySelector(this.getAttribute('href'));
+if (target) {
+target.scrollIntoView({
+behavior: 'smooth',
+block: 'start'
+});
+}
+});
+});
+let lastScroll = 0;
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+const currentScroll = window.pageYOffset;
+if (currentScroll > 100) {
+navbar.classList.add('bg-janus-dark/90', 'backdrop-blur-md', 'border-b',
+'border-janus-steel/30');
+} else {
+navbar.classList.remove('bg-janus-dark/90', 'backdrop-blur-md', 'border-b',
+'border-janus-steel/30');
+}
+lastScroll = currentScroll;
+});
+</script>
 </body>
 </html>
